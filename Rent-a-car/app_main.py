@@ -8,6 +8,7 @@ app = Flask(__name__)
 
 carros = []
 clientes = []
+locacoes = []
 
 #  ----- MÉTODOS CARRO ----------
 #  Adiciona novo carro
@@ -92,6 +93,36 @@ def listar_clientes_id(id):
             return jsonify(cliente)
 
 
+# ----- LOCAÇÃO DE VEICULOS
+
+# Registrar locação
+#  Adiciona nova locação
+@app.route('/locacao', methods=['POST'])
+def adicionar_locacao():
+    nova_locacao = request.get_json()
+    locacoes.append(nova_locacao)
+    return jsonify(locacoes)
+
+# Registrar devolução
+@app.route('/locacao/<int:id>', methods=['DELETE'])
+def excluir_locacao(id):
+    for indice, locacao in enumerate(locacoes):
+        if locacao.get('id') == id:
+            del locacoes[indice]
+            
+    return jsonify(locacoes)
+
+# Listando todas as locações
+@app.route('/locacao', methods=['GET'])
+def listar_locacoes():
+    return jsonify(locacoes)  
+
+#  Listar locações por id
+@app.route('/locacao/<int:id>', methods=['GET'])
+def listar_locacoes_id(id):
+    for locacao in locacoes:
+        if locacao.get('id') == id:
+            return jsonify(locacoes)
 
 #  Executa a aplicação
 app.run(port=5000, host='localhost', debug=True)
