@@ -100,7 +100,11 @@ def listar_clientes_id(id):
 @app.route('/locacao', methods=['POST'])
 def adicionar_locacao():
     nova_locacao = request.get_json()
+    # Pego o ID do cliente para alteração 
+    id_cliente = nova_locacao.get('id')
     locacoes.append(nova_locacao)
+    # Faço a alteração do Id através do método
+    altera_status_cliente(id_cliente,True)
     return jsonify(locacoes)
 
 # Registrar devolução
@@ -119,10 +123,31 @@ def listar_locacoes():
 
 #  Listar locações por id
 @app.route('/locacao/<int:id>', methods=['GET'])
-def listar_locacoes_id(id):
+def listar_locacao_id(id):
     for locacao in locacoes:
         if locacao.get('id') == id:
-            return jsonify(locacoes)
+            return jsonify(locacao)
+        
+        
+def altera_status_cliente(id, status):
+    status_atual = status
+    
+    if status_atual == True:
+        status_atual = 'Possui locação'
+        cliente_editado = request.get_json()
+        for indice, cliente in enumerate(clientes):
+            if cliente.get('id') == id:
+                clientes[indice]['status'] = status_atual
+                return jsonify(clientes[indice])
+    else:
+        status_atual = 'Nao possui locação'
+        for indice, cliente in enumerate(clientes):
+                     if cliente.get('id') == id:
+                        clientes[indice]['status'] = status_atual
+                        return jsonify(clientes[indice])                
+
+                
+    
 
 #  Executa a aplicação
 app.run(port=5000, host='localhost', debug=True)
