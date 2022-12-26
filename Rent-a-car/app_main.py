@@ -101,10 +101,14 @@ def listar_clientes_id(id):
 def adicionar_locacao():
     nova_locacao = request.get_json()
     # Pego o ID do cliente para alteração 
-    id_cliente = nova_locacao.get('id')
+    id_cliente = nova_locacao.get('id_cliente')
+    id_carro = nova_locacao.get('id_carro')
+    
     locacoes.append(nova_locacao)
     # Faço a alteração do Id através do método
-    altera_status_cliente(id_cliente,True)
+    altera_status_cliente(id_cliente, True)
+    altera_status_carro(id_carro, True)
+    
     return jsonify(locacoes)
 
 # Registrar devolução
@@ -112,6 +116,10 @@ def adicionar_locacao():
 def excluir_locacao(id):
     for indice, locacao in enumerate(locacoes):
         if locacao.get('id') == id:
+            id_cliente = locacao.get('id_cliente')
+            id_carro = locacao.get('id_carro')
+            altera_status_cliente(id_cliente, False)
+            altera_status_carro(id_carro, False)
             del locacoes[indice]
             
     return jsonify(locacoes)
@@ -127,25 +135,41 @@ def listar_locacao_id(id):
     for locacao in locacoes:
         if locacao.get('id') == id:
             return jsonify(locacao)
-        
-        
+                
 def altera_status_cliente(id, status):
     status_atual = status
     
     if status_atual == True:
         status_atual = 'Possui locação'
-        cliente_editado = request.get_json()
         for indice, cliente in enumerate(clientes):
-            if cliente.get('id') == id:
+            if cliente.get('id_cliente') == id:
                 clientes[indice]['status'] = status_atual
-                return jsonify(clientes[indice])
+                
+                return 
     else:
         status_atual = 'Nao possui locação'
         for indice, cliente in enumerate(clientes):
-                     if cliente.get('id') == id:
+                     if cliente.get('id_cliente') == id:
                         clientes[indice]['status'] = status_atual
-                        return jsonify(clientes[indice])                
-
+                        
+                        return 
+    
+                                   
+def altera_status_carro(id_carro, status):
+    status_atual = status
+    
+    if status_atual == True:
+        status_atual = 'Alugado'
+        for indice, carro in enumerate(carros):
+            if carro.get('id_carro') == id_carro:
+                carros[indice]['status'] = status_atual
+                return
+    else:
+        status_atual = 'Disponivel'
+        for indice, carro in enumerate(carros):
+                     if carro.get('id_carro') == id_carro:
+                        carros[indice]['status'] = status_atual
+                        return 
                 
     
 
