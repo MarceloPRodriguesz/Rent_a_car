@@ -78,7 +78,7 @@ def excluir_clientes(id):
             del clientes[indice]
             
     return jsonify(clientes)
-    
+   
 
 # Listando todos os clientes
 @app.route('/clientes', methods=['GET'])
@@ -92,7 +92,6 @@ def listar_clientes_id(id):
         if cliente.get('id') == id:
             return jsonify(cliente)
 
-
 # ----- LOCAÇÃO DE VEICULOS
 
 # Registrar locação
@@ -103,12 +102,12 @@ def adicionar_locacao():
     # Pego o ID do cliente para alteração 
     id_cliente = nova_locacao.get('id_cliente')
     id_carro = nova_locacao.get('id_carro')
-    
+
     locacoes.append(nova_locacao)
     # Faço a alteração do Id através do método
     altera_status_cliente(id_cliente, True)
     altera_status_carro(id_carro, True)
-    
+
     return jsonify(locacoes)
 
 # Registrar devolução
@@ -135,7 +134,8 @@ def listar_locacao_id(id):
     for locacao in locacoes:
         if locacao.get('id') == id:
             return jsonify(locacao)
-                
+ 
+# ----- Alterações e verificações -----                
 def altera_status_cliente(id, status):
     status_atual = status
     
@@ -153,8 +153,7 @@ def altera_status_cliente(id, status):
                         clientes[indice]['status'] = status_atual
                         
                         return 
-    
-                                   
+                                       
 def altera_status_carro(id_carro, status):
     status_atual = status
     
@@ -171,7 +170,5 @@ def altera_status_carro(id_carro, status):
                         carros[indice]['status'] = status_atual
                         return 
                 
-    
-
 #  Executa a aplicação
 app.run(port=5000, host='localhost', debug=True)
