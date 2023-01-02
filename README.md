@@ -1,6 +1,6 @@
 # Rent a car🚗
 
-API em python que simula o ambiente de uma locadora de veículos e suas as suas operações. Aplicação em execução pode ser visualizada com mais facilidade através da ferramenta POstman.
+API em python que simula o ambiente de uma locadora de veículos e suas operações. Aplicação em execução pode ser visualizada com mais facilidade através da ferramenta POstman.
 
 ## Tecnologias utilizadas
 <div> 
